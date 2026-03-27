@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://BeetrootEnigma.github.io/tomduguid",
+  "homepage": "https://tomduguid.com",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

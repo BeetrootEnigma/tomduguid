@@ -1,0 +1,538 @@
+/* ─── Layout ─────────────────────────────────────────────── */
+
+.page {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #f8f6f2;
+}
+
+/* ─── Navigation ─────────────────────────────────────────── */
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+  height: 56px;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background 0.4s, border-color 0.4s;
+}
+
+/* Solid bar on exhibitions page */
+.nav.on-page {
+  background: rgba(248, 246, 242, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom-color: transparent;
+}
+
+.nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 36px;
+}
+
+/* ── shared styles for both <a> and <button> nav items ── */
+.nav-name,
+.nav-links a,
+.nav-links button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.85);
+  transition: color 0.35s;
+}
+
+.nav-name {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  color: #fff;
+}
+
+.nav-links a,
+.nav-links button {
+  font-size: 12px;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.55);
+  transition: color 0.35s, text-shadow 0.35s;
+}
+
+/* Hover — always white-ish on hero, dark on page */
+.nav-links a:hover,
+.nav-links button:hover {
+  color: #fff;
+}
+
+/* Active link */
+.nav-links a.active,
+.nav-links button.active {
+  color: #fff;
+}
+
+/* ── Scrolled state (gallery only) ── */
+.nav.scrolled .nav-name,
+.nav.scrolled .nav-links a,
+.nav.scrolled .nav-links button {
+  color: #111;
+  text-shadow: none;
+}
+
+.nav.scrolled .nav-links a:hover,
+.nav.scrolled .nav-links button:hover,
+.nav.scrolled .nav-links a.active,
+.nav.scrolled .nav-links button.active {
+  color: #000;
+}
+
+/* ── On-page state (exhibitions) ── */
+.nav.on-page .nav-name,
+.nav.on-page .nav-links a,
+.nav.on-page .nav-links button {
+  color: #555;
+  text-shadow: none;
+}
+
+.nav.on-page .nav-links a:hover,
+.nav.on-page .nav-links button:hover,
+.nav.on-page .nav-links a.active,
+.nav.on-page .nav-links button.active {
+  color: #111;
+}
+
+/* ─── Gallery Track ──────────────────────────────────────── */
+
+.gallery-track {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  cursor: grab;
+  user-select: none;
+}
+
+.gallery-track::-webkit-scrollbar {
+  display: none;
+}
+
+.gallery-track:active {
+  cursor: grabbing;
+}
+
+/* ─── Hero Panel ─────────────────────────────────────────── */
+
+.hero-panel {
+  flex-shrink: 0;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+.hero-painting {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.08) 0%,
+    rgba(0, 0, 0, 0) 40%,
+    rgba(0, 0, 0, 0.38) 100%
+  );
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 48px 56px 20px;
+  pointer-events: none;
+}
+
+.hero-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hero-artist {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 48px;
+  font-weight: 400;
+  color: #fff;
+  margin: 0;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+
+.hero-subtitle {
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+
+/* ─── Scroll Hint ─────────────────────────────────────────── */
+
+.scroll-hint {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.scroll-text {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.scroll-arrow {
+  display: flex;
+  align-items: center;
+  animation: nudge 2s ease-in-out infinite;
+}
+
+@keyframes nudge {
+  0%, 100% { transform: translateX(0); }
+  50%       { transform: translateX(6px); }
+}
+
+/* ─── Gallery Track — vertical mode ─────────────────────── */
+
+.gallery-track.vertical {
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+  cursor: default;
+}
+
+/* ─── Gallery Row ────────────────────────────────────────── */
+
+.gallery-row {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 14vw;
+  gap: 16vw;
+  height: 100%;
+}
+
+.gallery-row.vertical {
+  flex-direction: column;
+  align-items: center;
+  height: auto;
+  padding: 10vh 0 14vh;
+  gap: 14vh;
+}
+
+/* ─── Artwork Card ───────────────────────────────────────── */
+
+.artwork-card {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  cursor: pointer;
+}
+
+.artwork-image {
+  display: block;
+  height: calc(var(--scale, 1) * clamp(300px, 62vh, 680px));
+  width: auto;
+  max-width: 80vw;
+  transition: opacity 0.3s ease;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.14);
+}
+
+.artwork-image--irregular {
+  box-shadow: none;
+  filter: drop-shadow(0 4px 32px rgba(0, 0, 0, 0.14));
+}
+
+/* In vertical mode images are wider, height follows naturally */
+.gallery-row.vertical .artwork-image {
+  height: auto;
+  width: calc(var(--scale, 1) * clamp(280px, 52vw, 700px));
+  max-width: 88vw;
+}
+
+.gallery-row.vertical .artwork-image--irregular {
+  box-shadow: none;
+  filter: drop-shadow(0 4px 32px rgba(0, 0, 0, 0.14));
+}
+
+
+/* ─── Typography ─────────────────────────────────────────── */
+
+.artwork-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-top: 4px;
+}
+
+.artwork-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.artwork-title {
+  font-family: 'Haboro Soft', 'Raleway', sans-serif;
+  font-size: clamp(18px, 1.6vw, 26px);
+  font-weight: 400;
+  color: #2a2a2a;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+}
+
+.sold-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #d42b2b;
+  flex-shrink: 0;
+}
+
+.subtitle {
+  font-size: 11px;
+  font-variant: small-caps;
+  letter-spacing: 0.08em;
+  color: #999;
+  text-transform: lowercase;
+  margin: 0;
+}
+
+.artwork-dash {
+  padding: 0 6px;
+  font-variant: normal;
+}
+
+
+/* ─── Gallery hidden state ───────────────────────────────── */
+
+.gallery-track.hidden {
+  display: none;
+}
+
+/* ─── Shared page content ────────────────────────────────── */
+
+.page-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-top: 56px;
+  background: #f8f6f2;
+}
+
+/* ─── About Page ─────────────────────────────────────────── */
+
+.about-page {
+  flex: 1;
+  overflow-y: auto;
+  background: #f8f6f2;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.about-hero {
+  width: 100%;
+}
+
+.about-hero-img {
+  display: block;
+  width: 100%;
+  height: calc(58vh + 56px);
+  object-fit: cover;
+}
+
+.about-body-section {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 0 48px;
+  padding: 48px 48px 64px;
+  flex: 1;
+  align-items: start;
+}
+
+.about-name {
+  font-family: 'Haboro Soft', 'Raleway', sans-serif;
+  font-size: clamp(16px, 1.4vw, 22px);
+  font-weight: 300;
+  color: #1a1a1a;
+  margin: 0;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+}
+
+.about-body-text {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #444;
+  margin: 0;
+}
+
+.about-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.about-links a {
+  font-size: 13px;
+  color: #333;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding-bottom: 1px;
+  width: fit-content;
+  transition: color 0.2s;
+}
+
+.about-links a:hover {
+  color: #111;
+  border-color: #111;
+}
+
+.about-footer {
+  padding: 20px 48px;
+}
+
+.about-copyright {
+  font-size: 11px;
+  color: #aaa;
+  letter-spacing: 0.02em;
+}
+
+/* ─── Exhibitions Page ───────────────────────────────────── */
+
+.exhibitions-page {
+  flex: 1;
+  overflow-y: auto;
+  background: #f8f6f2;
+  padding-top: 56px;
+}
+
+.exhibitions-list {
+  list-style: none;
+  margin: 0;
+  padding: 80px 0 80px;
+}
+
+.exhibition-item {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr;
+  align-items: baseline;
+  gap: 0 24px;
+  padding: 18px 56px;
+  border-top: 1px solid rgba(0, 0, 0, 0.09);
+}
+
+.exhibition-item:last-child {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.09);
+}
+
+.ex-left {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.ex-title {
+  font-family: 'Haboro Soft', 'Raleway', sans-serif;
+  font-size: clamp(16px, 1.4vw, 22px);
+  font-weight: 300;
+  color: #1a1a1a;
+  letter-spacing: 0.01em;
+}
+
+.ex-type {
+  font-size: 10px;
+  font-variant: small-caps;
+  letter-spacing: 0.1em;
+  color: #bbb;
+  text-transform: lowercase;
+}
+
+.ex-venue {
+  flex: 1;
+  text-align: left;
+}
+
+.ex-date {
+  font-size: 11px;
+  font-variant: small-caps;
+  letter-spacing: 0.08em;
+  color: #999;
+  text-transform: lowercase;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ─── Direction Toggle Button ────────────────────────────── */
+
+.home-copyright {
+  position: fixed;
+  bottom: 20px;
+  left: 48px;
+  z-index: 20;
+  font-size: 11px;
+  color: #aaa;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+}
+
+.direction-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 48px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #444;
+}
+
+.direction-toggle .scroll-text {
+  color: #444;
+}
+
+.direction-toggle .scroll-arrow {
+  animation: none;
+  color: #444;
+}
+
+.direction-toggle:hover .scroll-text,
+.direction-toggle:hover .scroll-arrow {
+  color: #111;
+}
+

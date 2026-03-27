@@ -8,10 +8,13 @@ import { Navbar } from './components/Navabr'
 import { artworks } from './utils/artworks'
 
 const maxHeightCm = Math.max(...artworks.map((a) => a.heightCm))
+const maxDimCm = Math.max(...artworks.map((a) => Math.max(a.heightCm, a.widthCm ?? 0)))
 
 export default function App() {
   const [trackEl, setTrackEl] = useState<HTMLElement | null>(null)
   const [scrolled, setScrolled] = useState(false)
+  const [navHidden, setNavHidden] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [vertical, setVertical] = useState(false)
   const { hash } = useLocation()
 
@@ -25,13 +28,14 @@ export default function App() {
     // Sync initial state in case the element mounts mid-scroll or after navigation
     setScrolled(
       vertical
-        ? el.scrollTop > window.innerHeight * 0.5
-        : el.scrollLeft > window.innerWidth * 0.5
+        ? el.scrollTop > window.innerHeight * 0.95
+        : el.scrollLeft > window.innerWidth * 0.95
     )
 
     let isDown = false
     let startX = 0
     let scrollLeft = 0
+    let lastScrollPos = vertical ? el.scrollTop : el.scrollLeft
 
     const onMouseDown = (e: MouseEvent) => {
       isDown = true
@@ -48,11 +52,19 @@ export default function App() {
     }
 
     const onScroll = () => {
-      setScrolled(
-        vertical
-          ? el.scrollTop > window.innerHeight * 0.5
-          : el.scrollLeft > window.innerWidth * 0.5
-      )
+      const pos = vertical ? el.scrollTop : el.scrollLeft
+      const heroSize = vertical ? window.innerHeight : window.innerWidth
+      const pastHero = pos > heroSize * 0.95
+
+      setScrolled(pastHero)
+
+      if (vertical && pastHero) {
+        setNavHidden(pos > lastScrollPos)
+      } else {
+        setNavHidden(false)
+      }
+
+      lastScrollPos = pos
     }
 
     el.addEventListener('mousedown', onMouseDown)
@@ -87,8 +99,10 @@ export default function App() {
   }
 
   return (
-    <div className="page">
-      <Navbar scrolled={scrolled} />
+    <div
+      className={`page${vertical && scrolled ? ' gallery-vertical-scrolled' : ''}${mobileMenuOpen ? ' mobile-menu-open' : ''}`}
+    >
+      <Navbar scrolled={scrolled} hidden={navHidden} onMenuOpenChange={setMobileMenuOpen} />
 
       <Routes>
         <Route path="/" element={
@@ -98,8 +112,10 @@ export default function App() {
               <div className="hero-panel">
                 <img className="hero-painting" src={heroImage} alt="" />
                 <div className="hero-overlay">
-                  <div className="scroll-hint">
-                    <span className="scroll-text">scroll for more</span>
+                  <div className={`scroll-hint${vertical ? ' vertical' : ''}`}>
+                    <span className="scroll-text scroll-text--desktop">scroll for more</span>
+                    <span className="scroll-text scroll-text--mobile scroll-text--swipe-left">swipe left</span>
+                    <span className="scroll-text scroll-text--mobile scroll-text--swipe-up">swipe up</span>
                     <div className="scroll-arrow">
                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                         <path d="M0 10h16M13 7l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -117,7 +133,10 @@ export default function App() {
                       className={`artwork-image${(artwork as typeof artwork & { irregular?: boolean }).irregular ? ' artwork-image--irregular' : ''}`}
                       src={artwork.src}
                       alt={artwork.title}
-                      style={{ '--scale': (artwork.heightCm / maxHeightCm).toFixed(3) } as React.CSSProperties}
+                      style={{
+                        '--scale': (artwork.heightCm / maxHeightCm).toFixed(3),
+                        '--v-scale': (Math.max(artwork.heightCm, artwork.widthCm ?? 0) / maxDimCm).toFixed(3),
+                      } as React.CSSProperties}
                     />
                     <div className="artwork-info">
                       <div className="artwork-title-row">

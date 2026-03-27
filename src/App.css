@@ -1,6 +1,7 @@
 /* ─── Layout ─────────────────────────────────────────────── */
 
 .page {
+  position: relative;
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -24,7 +25,7 @@
   height: 56px;
   background: transparent;
   border-bottom: 1px solid transparent;
-  transition: background 0.4s, border-color 0.4s;
+  transition: background 0.4s, border-color 0.4s, transform 0.35s ease;
 }
 
 /* Solid bar on exhibitions page */
@@ -208,6 +209,14 @@
   text-transform: uppercase;
 }
 
+.scroll-text--mobile {
+  display: none;
+}
+
+.scroll-text--swipe-up {
+  display: none;
+}
+
 .scroll-arrow {
   display: flex;
   align-items: center;
@@ -217,6 +226,15 @@
 @keyframes nudge {
   0%, 100% { transform: translateX(0); }
   50%       { transform: translateX(6px); }
+}
+
+@keyframes nudge-down {
+  0%, 100% { transform: rotate(90deg) translateX(0); }
+  50%       { transform: rotate(90deg) translateX(6px); }
+}
+
+.scroll-hint.vertical .scroll-arrow {
+  animation: nudge-down 2s ease-in-out infinite;
 }
 
 /* ─── Gallery Track — vertical mode ─────────────────────── */
@@ -260,8 +278,9 @@
 
 .artwork-image {
   display: block;
-  height: calc(var(--scale, 1) * clamp(300px, 62vh, 680px));
+  height: auto;
   width: auto;
+  max-height: calc(var(--scale, 1) * clamp(300px, 62vh, 680px));
   max-width: 80vw;
   transition: opacity 0.3s ease;
   box-shadow: 0 4px 32px rgba(0, 0, 0, 0.14);
@@ -272,10 +291,11 @@
   filter: drop-shadow(0 4px 32px rgba(0, 0, 0, 0.14));
 }
 
-/* In vertical mode images are wider, height follows naturally */
+/* In vertical mode, width drives sizing — use --v-scale which accounts for landscape paintings */
 .gallery-row.vertical .artwork-image {
   height: auto;
-  width: calc(var(--scale, 1) * clamp(280px, 52vw, 700px));
+  width: calc(var(--v-scale, var(--scale, 1)) * clamp(280px, 52vw, 700px));
+  max-height: none;
   max-width: 88vw;
 }
 
@@ -391,6 +411,7 @@
 }
 
 .about-body-text {
+  font-family: 'Haboro Soft', 'Raleway', sans-serif;
   font-size: 14px;
   line-height: 1.8;
   color: #444;
@@ -405,6 +426,7 @@
 }
 
 .about-links a {
+  font-family: 'Haboro Soft', 'Raleway', sans-serif;
   font-size: 13px;
   color: #333;
   text-decoration: underline;
@@ -424,6 +446,7 @@
 }
 
 .about-copyright {
+  font-family: 'Haboro Soft', 'Raleway', sans-serif;
   font-size: 11px;
   color: #aaa;
   letter-spacing: 0.02em;
@@ -534,5 +557,242 @@
 .direction-toggle:hover .scroll-text,
 .direction-toggle:hover .scroll-arrow {
   color: #111;
+}
+
+/* ─── Hamburger Button ───────────────────────────────────── */
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+}
+
+.hamburger-bar {
+  display: block;
+  width: 22px;
+  height: 1.5px;
+  background: currentColor;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  transform-origin: center;
+}
+
+/* Animate to × */
+.hamburger-bar.open:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.hamburger-bar.open:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger-bar.open:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* ─── Mobile Menu Overlay ────────────────────────────────── */
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9;
+  background: #f8f6f2;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.mobile-menu--open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mobile-menu-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.mobile-menu-links li {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.mobile-menu-links li + li {
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.mobile-menu-links a {
+  font-family: 'Haboro Soft', 'Raleway', sans-serif;
+  font-size: 18px;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #555;
+  padding: 20px 48px;
+  transition: color 0.2s;
+}
+
+.mobile-menu-links a:hover,
+.mobile-menu-links a.active {
+  color: #111;
+}
+
+/* ─── Mobile breakpoint ──────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .nav {
+    padding: 0 24px;
+  }
+
+  .nav.nav-hidden {
+    transform: translateY(-100%);
+  }
+
+  /* Mobile gradient: taller fade via pseudo-element extending below the nav */
+  .nav.on-page,
+  .nav.scrolled {
+    background: transparent;
+    backdrop-filter: none;
+    border-bottom-color: transparent;
+    overflow: visible;
+  }
+
+  .nav.on-page::before,
+  .nav.scrolled::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(to bottom, #f8f6f2 50%, transparent 100%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  /* Hamburger colour inherits from nav text colour */
+  .nav .hamburger {
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .nav.scrolled .hamburger,
+  .nav.on-page .hamburger {
+    color: #555;
+  }
+
+  .nav.menu-open .hamburger {
+    color: #555;
+  }
+
+  .mobile-menu {
+    display: flex;
+  }
+
+  /* Bottom gradient — only in vertical gallery view, past the hero */
+  .page.gallery-vertical-scrolled::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 140px;
+    background: linear-gradient(to top, #f8f6f2 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  /* About / Exhibitions pages — collapse to single column */
+  .about-body-section {
+    grid-template-columns: 1fr;
+    padding: 32px 24px 48px;
+    gap: 24px 0;
+  }
+
+  .about-links {
+    align-items: flex-start;
+  }
+
+  .about-footer {
+    padding: 16px 24px;
+  }
+
+  .exhibitions-list {
+    padding: 40px 0 60px;
+  }
+
+  .exhibition-item {
+    grid-template-columns: 1fr;
+    gap: 4px 0;
+    padding: 16px 24px;
+  }
+
+  .ex-date {
+    text-align: left;
+    margin-top: 4px;
+  }
+
+  .home-copyright {
+    left: 24px;
+    font-size: 8px;
+  }
+
+  .direction-toggle {
+    right: 24px;
+  }
+
+  /* Hide gallery controls behind the full-screen menu overlay */
+  .page.mobile-menu-open .direction-toggle {
+    display: none;
+  }
+
+  /* Scroll hint — centred vertically, flush right */
+  .scroll-hint {
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .scroll-text--desktop {
+    display: none;
+  }
+
+  .scroll-text--swipe-left {
+    display: inline;
+  }
+
+  /* Vertical mode — centred horizontally at the bottom, arrow points down */
+  .scroll-hint.vertical {
+    right: auto;
+    top: auto;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .scroll-hint.vertical .scroll-text--swipe-left {
+    display: none;
+  }
+
+  .scroll-hint.vertical .scroll-text--swipe-up {
+    display: inline;
+  }
 }
 

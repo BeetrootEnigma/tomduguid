@@ -17,7 +17,7 @@ export default function About() {
           doors, windows, depicting Tuscan and Mediterranean landscapes.
         </p>
         <div className="about-links">
-          <a href="mailto:studio@tomduguid.com">email</a>
+          <a href="mailto:duguidtom@gmail.com">email</a>
           <a href="https://www.instagram.com/tomduguid" target="_blank" rel="noopener noreferrer">instagram</a>
         </div>
       </div>

@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://www.tomduguid.com",
+  "homepage": "www.tomduguid.com",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

@@ -762,6 +762,12 @@
     display: none;
   }
 
+  /* Horizontal gallery only — extra space hero → first work & between works */
+  .gallery-track:not(.vertical) .gallery-row {
+    padding: 0 14vw 0 24vw;
+    gap: 26vw;
+  }
+
   /* Scroll hint — centred vertically, flush right */
   .scroll-hint {
     position: absolute;

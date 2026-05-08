@@ -1,16 +1,10 @@
 const exhibitions = [
-  { id: 1, title: 'Open Studio', type: 'Solo', venue: 'Studio', location: 'Anghiari', date: 'December, 2024' },
-  { id: 2, title: 'Anghiari', type: 'Group', venue: 'Palazzo Pretorio', location: 'Sansepolcro', date: 'November, 2024' },
-  { id: 3, title: 'Art Fair', type: 'Duo', venue: 'Cambridge', location: 'Cambridge', date: 'October, 2024' },
-  { id: 4, title: 'Palazzo Pretorio', type: 'Solo', venue: 'Palazzo Pretorio', location: 'Sansepolcro', date: 'June, 2024' },
-  { id: 5, title: 'Open Studio', type: 'Duo', venue: 'Studio', location: 'Anghiari', date: 'December, 2023' },
-  { id: 6, title: 'Open Studio', type: 'Group', venue: 'Palazzo Pretorio', location: 'Sansepolcro', date: 'October, 2023' },
-  { id: 7, title: 'Open Studio', type: 'Solo', venue: 'Studio', location: 'Anghiari', date: 'December, 2022' },
-  { id: 8, title: 'Art Fair', type: 'Group', venue: 'Palazzo Pretorio', location: 'Sansepolcro', date: 'September, 2022' },
-  { id: 9, title: 'Open Studio', type: 'Solo', venue: 'Studio', location: 'Anghiari', date: 'December, 2021' },
-  { id: 10, title: 'Art Fair', type: 'Group', venue: 'Palazzo Pretorio', location: 'Sansepolcro', date: 'October, 2021' },
-  { id: 11, title: 'Open Studio', type: 'Group', venue: 'Studio', location: 'Anghiari', date: 'December, 2020' },
-  { id: 12, title: 'Art Fair', type: 'Duo', venue: 'Palazzo Pretorio', location: 'Sansepolcro', date: 'September, 2020' },
+  { id: 1, title: 'Fresh Art Fair', type: 'Group', location: 'Cheltenham', date: 'May 2026' },
+  { id: 2, title: 'Fresh Art Fair', type: 'Group', location: 'Alexander Palace', date: 'January 2026' },
+  { id: 3, title: 'Palazzo Fontana', type: 'Group', location: 'Anghiari', date: 'October 2025' },
+  { id: 4, title: 'Studio Aperto', type: 'Solo', location: 'Anghiari', date: 'June 2025' },
+  { id: 5, title: 'Gallery Lunaria', type: 'Group', location: 'Anghiari', date: 'April 2024' },
+  { id: 6, title: 'Studio Aperto', type: 'Solo', location: 'Anghiari', date: 'December 2024' },
 ]
 
 export default function Exhibitions() {
@@ -23,7 +17,7 @@ export default function Exhibitions() {
               <span className="ex-title">{ex.title}</span>
               <span className="ex-type">{ex.type}</span>
             </div>
-            <span className="subtitle ex-venue">{ex.venue}, {ex.location}</span>
+            <span className="subtitle ex-venue">{ex.location}</span>
             <span className="ex-date">{ex.date}</span>
           </li>
         ))}

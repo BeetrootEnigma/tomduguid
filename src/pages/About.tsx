@@ -10,11 +10,11 @@ export default function About() {
       <div className="about-body-section">
         <h1 className="about-name">Tom Duguid</h1>
         <p className="about-body-text">
-          British oil painter based in Italy since 1988. Tom studied Art
-          History at the University of East Anglia, quickly discovering
-          that his curiosity lay in painting, rather than in examination
-          and debate. He works with canvas and wooden supports from reclaimed
-          doors, windows, depicting Tuscan and Mediterranean landscapes.
+          A British visual artist who works in Tuscany, where he has lived since 1989.
+          After graduating in a degree in History of Art, he moved to Italy, where he
+          paints in oil on wood and canvas. He is a self taught artist who has painted
+          since childhood. Many of his paintings focus on the landscape and houses of
+          the surrounding countryside, others on interiors from the past.
         </p>
         <div className="about-links">
           <a href="mailto:duguidtom@gmail.com">email</a>
